@@ -8,6 +8,7 @@
     docker_compose_version: "1.22.0"
     teamcity_user: "teamcity"
     install_directory: "/opt/teamcity"
+    openjdk_docker_img: "adoptopenjdk/openjdk11:x86_64-alpine-jdk-11.0.8_10"
   tasks:
   - name: Upgrade all packages to the latest version
     apt:
@@ -29,6 +30,9 @@
       name: "{{ playbook_dir }}/../vendor/ansible-docker-ubuntu"
     vars:
       docker_py_version: ""
+  - name: Pull openjdk image
+    command: docker pull {{openjdk_docker_img}}
+    become: yes
   - name: Manage User and Groups
     block:
     - name: Create "docker" group
